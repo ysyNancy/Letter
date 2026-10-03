@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>信札 · 每周回信</title>
+  <meta name="description" content="把一周的对话写成一封回信：读信、回顾情绪、翻看往期。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#letter">跳到正文</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#letter" aria-label="信札 首页">
+        <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.5 6.5h17v11h-17z M3.5 6.5 12 13l8.5-6.5" />
+        </svg>
+        <span>信札</span>
+      </a>
+
+      <p class="locator" aria-live="polite">
+        <span class="locator__no" data-bind="locNo">第十二封</span>
+        <span class="locator__sep" aria-hidden="true">/</span>
+        <span data-bind="locSection">读信</span>
+        <span class="locator__para" data-bind="locPara">第一段 · 共九段</span>
+      </p>
+
+      <nav class="nav" aria-label="页面定位">
+        <a href="#letter" data-nav="letter" aria-current="true">读信</a>
+        <a href="#review" data-nav="review">回顾</a>
+        <a href="#archive" data-nav="archive">档案</a>
+      </nav>
+    </div>
+    <div class="progress" aria-hidden="true"><span data-bind="progress"></span></div>
+  </header>
+
+  <main class="layout">
+    <!-- 左：往期 / 档案 -->
+    <aside class="col col--archive" id="archive" aria-labelledby="archive-h" tabindex="-1">
+      <h2 class="label" id="archive-h">往期</h2>
+      <ol class="archive" data-bind="archive"></ol>
+      <p class="archive__note">共十二封 · 自六月起<br>更早七封收在木匣里</p>
+    </aside>
+
+    <!-- 中：信件 -->
+    <article class="col col--letter" id="letter" aria-labelledby="letter-h" tabindex="-1">
+      <div class="sheet" data-bind="sheet">
+        <header class="letterhead">
+          <svg class="flourish" viewBox="0 0 240 40" aria-hidden="true">
+            <g class="flourish__half">
+              <path d="M120 33 C113 27 105 21 105 13 C105 7 111 5 115 8 C118 10 120 13 120 16" />
+              <path d="M105 14 C92 15 84 26 70 22 C61 19 59 10 66 8 C71 7 73 13 69 15" />
+              <path d="M70 22 C56 28 44 18 30 22" />
+              <path class="leaf" d="M86 20 c-2-5 2-9 5-7 c2 2-1 6-5 7z" />
+              <path class="leaf" d="M44 21 c-1-5 3-8 6-6 c1 2-2 6-6 6z" />
+              <path d="M0 30 H40" class="hair" />
+            </g>
+            <g class="flourish__half" transform="translate(240 0) scale(-1 1)">
+              <path d="M120 33 C113 27 105 21 105 13 C105 7 111 5 115 8 C118 10 120 13 120 16" />
+              <path d="M105 14 C92 15 84 26 70 22 C61 19 59 10 66 8 C71 7 73 13 69 15" />
+              <path d="M70 22 C56 28 44 18 30 22" />
+              <path class="leaf" d="M86 20 c-2-5 2-9 5-7 c2 2-1 6-5 7z" />
+              <path class="leaf" d="M44 21 c-1-5 3-8 6-6 c1 2-2 6-6 6z" />
+              <path d="M0 30 H40" class="hair" />
+            </g>
+          </svg>
+          <h1 class="letterhead__no" id="letter-h" data-bind="no">第十二封</h1>
+          <p class="letterhead__meta">
+            <time data-bind="range">9月21—27日</time>
+            <span aria-hidden="true">·</span>
+            <span>写给 <b data-bind="to">阿禾</b></span>
+          </p>
+        </header>
+
+        <div class="body" data-bind="body"></div>
+
+        <section class="closing" aria-labelledby="closing-h">
+          <h2 class="closing__label" id="closing-h">
+            <span>信末</span><span class="closing__from" data-bind="wishFrom">承接第十一封的心愿</span>
+          </h2>
+          <p class="closing__wish">上周你许的心愿，是“<span data-bind="wish"></span>”。</p>
+          <p class="closing__text" data-bind="closing"></p>
+          <p class="sign">
+            <span class="sign__name">信札</span>
+            <span class="sign__date" data-bind="sent"></span>
+          </p>
+        </section>
+
+        <section class="ask" aria-labelledby="ask-h">
+          <svg class="ask__flap" viewBox="0 0 512 44" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0 L256 40 L512 0" />
+            <path d="M0 6 L256 44 L512 6" class="faint" />
+          </svg>
+          <h2 class="ask__label" id="ask-h">附问</h2>
+          <p class="ask__q" data-bind="question"></p>
+
+          <form class="reply" data-bind="replyForm" novalidate>
+            <label class="sr-only" for="reply-text">写下你的回复</label>
+            <textarea id="reply-text" name="reply" rows="4" maxlength="200" placeholder="慢慢写，不急。这里只有你和这封信。"></textarea>
+            <div class="reply__bar">
+              <span class="reply__hint" data-bind="replyHint">草稿会自动留在这里</span>
+              <span class="reply__count"><span data-bind="replyCount">0</span> / 200</span>
+              <button type="submit" class="btn" data-bind="replySend" disabled>封好寄出</button>
+            </div>
+          </form>
+
+          <div class="sealed" data-bind="sealed" hidden>
+            <svg class="sealed__icon" viewBox="0 0 48 34" aria-hidden="true">
+              <rect x="1" y="1" width="46" height="32" />
+              <path d="M1 1 L24 20 L47 1" />
+              <path class="heart" d="M24 27 c-3-2.5-6-4.6-6-7.2 c0-1.8 1.4-3 3-3 c1.3 0 2.3 .8 3 2 c.7-1.2 1.7-2 3-2 c1.6 0 3 1.2 3 3 c0 2.6-3 4.7-6 7.2z" />
+            </svg>
+            <div>
+              <p class="sealed__meta">你的回复 · <span data-bind="sealedDate"></span>已寄出</p>
+              <p class="sealed__text" data-bind="sealedText"></p>
+              <button type="button" class="link" data-bind="replyEdit">拆开重写</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </article>
+
+    <!-- 右：回顾 -->
+    <aside class="col col--review" id="review" aria-labelledby="review-h" tabindex="-1">
+      <h2 class="sr-only" id="review-h">本周回顾</h2>
+
+      <section class="block" aria-labelledby="topics-h">
+        <h3 class="label" id="topics-h">七日话题</h3>
+        <ol class="topics" data-bind="topics"></ol>
+      </section>
+
+      <section class="block" aria-labelledby="mood-h">
+        <div class="block__head">
+          <h3 class="label" id="mood-h">情绪折线</h3>
+          <span class="scale">1 低落 — 5 舒展</span>
+        </div>
+        <div class="chart" data-bind="chart"></div>
+      </section>
+
+      <section class="block" aria-labelledby="kw-h">
+        <div class="block__head">
+          <h3 class="label" id="kw-h">三个关键词</h3>
+          <span class="scale">点选在信中标出</span>
+        </div>
+        <ul class="keywords" data-bind="keywords"></ul>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__note">信札 · 每周日晚八点，把一周的对话写成一封信</p>
+      <form class="settings" aria-label="阅读设置" data-bind="settings">
+        <fieldset>
+          <legend>字号</legend>
+          <label><input type="radio" name="size" value="s"><span>小</span></label>
+          <label><input type="radio" name="size" value="m"><span>中</span></label>
+          <label><input type="radio" name="size" value="l"><span>大</span></label>
+        </fieldset>
+        <fieldset>
+          <legend>纸色</legend>
+          <label><input type="radio" name="paper" value="cream"><span>米白</span></label>
+          <label><input type="radio" name="paper" value="silk"><span>素绢</span></label>
+          <label><input type="radio" name="paper" value="night"><span>夜读</span></label>
+        </fieldset>
+        <fieldset>
+          <legend>行距</legend>
+          <label><input type="radio" name="leading" value="loose"><span>疏</span></label>
+          <label><input type="radio" name="leading" value="tight"><span>密</span></label>
+        </fieldset>
+      </form>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

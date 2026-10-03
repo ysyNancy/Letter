@@ -1,0 +1,9 @@
+{
+  "name": "xinzha-letter",
+  "private": true,
+  "version": "0.1.0",
+  "description": "信札 · 周对话情绪回信前端页（纯静态）",
+  "scripts": {
+    "preview": "npx --yes http-server . -p 4173 -c-1 --silent"
+  }
+}

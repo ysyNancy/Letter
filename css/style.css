@@ -306,6 +306,8 @@ button { font: inherit; color: inherit; }
   transition: background-size .35s ease;
   background-repeat: no-repeat;
   background-size: 0 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 .mark.is-on { background-size: 100% 100%; }
 .para::before {

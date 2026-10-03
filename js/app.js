@@ -25,7 +25,9 @@
   var state = { letter: null, keyword: null, day: null, section: "letter" };
 
   /* ———————————— 设置（页脚） ———————————— */
-  var settings = Object.assign({ size: "m", paper: "cream", leading: "loose" }, store.get("settings", {}));
+  // 没选过纸色时跟随系统深浅色
+  var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var settings = Object.assign({ size: "m", paper: prefersDark ? "night" : "cream", leading: "loose" }, store.get("settings", {}));
   function applySettings() {
     root.dataset.size = settings.size;
     root.dataset.paper = settings.paper;
@@ -69,14 +71,17 @@
   }
 
   /* ———————————— 信件 ———————————— */
-  // 关键词在句中用记号笔标出；没有关键词的“日段”整句标出。
-  function markText(text, words) {
+  // kw 把关键词映射到段内原文短语，短语用记号笔标出，记号带上所属关键词。
+  function markText(text, kw) {
     var frag = document.createDocumentFragment();
-    if (!words || !words.length) { frag.append(text); return frag; }
-    var re = new RegExp("(" + words.map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")", "g");
+    var byPhrase = {};
+    Object.keys(kw || {}).forEach(function (w) { byPhrase[kw[w]] = w; });
+    var phrases = Object.keys(byPhrase);
+    if (!phrases.length) { frag.append(text); return frag; }
+    var re = new RegExp("(" + phrases.map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")", "g");
     text.split(re).forEach(function (part, i) {
       if (!part) return;
-      if (i % 2) { var m = el("span", "mark", part); m.dataset.kw = part; frag.append(m); }
+      if (i % 2) { var m = el("span", "mark", part); m.dataset.kw = byPhrase[part]; frag.append(m); }
       else frag.append(part);
     });
     return frag;
@@ -98,7 +103,7 @@
       var para = el("p", "para");
       para.dataset.index = i;
       if (p.day != null) para.dataset.day = p.day;
-      para.dataset.kw = (p.kw || []).join(" ");
+      para.dataset.kw = Object.keys(p.kw || {}).join(" ");
       var no = el("span", "para__no", cn(i + 1));
       no.setAttribute("aria-hidden", "true");
       para.append(no, markText(p.t, p.kw));
@@ -107,7 +112,7 @@
 
     var closing = $("closing");
     closing.textContent = "";
-    closing.dataset.kw = (l.closing.kw || []).join(" ");
+    closing.dataset.kw = Object.keys(l.closing.kw || {}).join(" ");
     closing.append(markText(l.closing.t, l.closing.kw));
 
     document.title = "第" + cn(l.no) + "封 · " + l.range + " — 信札";
@@ -253,7 +258,7 @@
     var list = $("keywords");
     list.textContent = "";
     l.keywords.forEach(function (w) {
-      var count = l.paragraphs.concat([l.closing]).filter(function (p) { return (p.kw || []).indexOf(w) > -1; }).length;
+      var count = l.paragraphs.concat([l.closing]).filter(function (p) { return !!p.kw && w in p.kw; }).length;
       var li = el("li");
       var b = el("button");
       b.type = "button";
